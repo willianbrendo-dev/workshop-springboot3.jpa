@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-import org.hibernate.annotations.ManyToAny;
-
 import com.example.aulajpa.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
