@@ -1,7 +1,6 @@
 package com.example.aulajpa.config;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.example.aulajpa.entities.Category;
 import com.example.aulajpa.entities.Order;
 import com.example.aulajpa.entities.User;
 import com.example.aulajpa.entities.enums.OrderStatus;
+import com.example.aulajpa.repositories.CategoryRepository;
 import com.example.aulajpa.repositories.OrderRepository;
 import com.example.aulajpa.repositories.UserRepository;
 
@@ -24,6 +25,9 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -34,8 +38,14 @@ public class TestConfig implements CommandLineRunner{
 		Order o2 = new Order(null, Instant.parse("2023-12-31T23:59:59Z"), OrderStatus.SHIPPED, u1);
 		Order o3 = new Order(null, Instant.parse("2024-07-15T08:20:10Z"), OrderStatus.PAID, u2);
 		
+		Category cat1 = new Category(null, "Electronics");
+		Category cat2 = new Category(null, "Books");
+		Category cat3 = new Category(null, "Computers");
+		
+		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 	}
 	
 	

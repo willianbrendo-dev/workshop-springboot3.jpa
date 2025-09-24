@@ -14,14 +14,14 @@ import com.example.aulajpa.repositories.OrderRepository;
 public class OrderService {
 
 	@Autowired
-	private OrderRepository repository;
+	private OrderRepository OrderRepository;
 	
 	public List<Order> findAll() {
-		return repository.findAll();
+		return OrderRepository.findAll();
 	}
 	
 	public Order findById(Long id) {
-		Optional<Order> obj = repository.findById(id);
+		Optional<Order> obj = OrderRepository.findById(id);
 		return obj.orElse(null); // Retorna null se o objeto não for encontrado
 	}
 }
