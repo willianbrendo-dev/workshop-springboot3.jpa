@@ -13,7 +13,7 @@ import com.example.aulajpa.entities.Category;
 import com.example.aulajpa.services.CategoryService;
 
 @RestController
-@RequestMapping(value = "/categorys")
+@RequestMapping(value = "/categories")
 public class CategoryResources {
 	
 	@Autowired
