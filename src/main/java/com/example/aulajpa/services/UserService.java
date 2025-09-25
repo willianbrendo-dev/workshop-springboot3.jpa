@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.aulajpa.entities.User;
 import com.example.aulajpa.repositories.UserRepository;
+import com.example.aulajpa.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -57,6 +58,6 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.orElse(null); // Retorna null se o objeto não for encontrado
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); 
 	}
 }
