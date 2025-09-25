@@ -2,6 +2,7 @@ package com.example.aulajpa.resources.exceptions;
 
 import java.time.Instant;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,4 +39,29 @@ public class ResourceExceptionHandler {
         // 2. Retorna a resposta com o status 404 e o corpo de erro
         return ResponseEntity.status(status).body(err);
     }
+    
+    /**
+     * Manipulador para a exceção DataIntegrityViolationException.
+     * Mapeia para o status HTTP 400 Bad Request (Violação de FK/Chave Única).
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> database(DataIntegrityViolationException e, HttpServletRequest request) {
+        
+        // Define o código de status HTTP 400
+        HttpStatus status = HttpStatus.BAD_REQUEST; 
+        
+        StandardError err = new StandardError(
+            Instant.now(),                       
+            status.value(),                      // 400
+            "Database Integrity Violation",      
+            e.getMessage(),                      
+            request.getRequestURI()              
+        );
+        
+        return ResponseEntity.status(status).body(err);
+    }
+    
+    
 }
+
+
