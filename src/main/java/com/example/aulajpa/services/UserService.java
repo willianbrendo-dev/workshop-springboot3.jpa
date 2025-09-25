@@ -19,6 +19,10 @@ public class UserService {
 		return service.save(obj);
 	}
 	
+	public void delete(Long id) {
+		service.deleteById(id);
+	}
+	
 	public List<User> findAll() {
 		return service.findAll();
 	}
