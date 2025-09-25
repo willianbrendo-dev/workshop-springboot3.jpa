@@ -2,7 +2,9 @@ package com.example.aulajpa.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.example.aulajpa.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +35,12 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
+	
+	// --- Associação OneToMany (Order tem muitos OrderItems - Items) ---
+    // mappedBy: Indica qual é o campo na classe OrderItem que mapeia esta associação.
+    // O mapeamento está no lado da chave composta OrderItemPK.order (que acessamos via OrderItem.getOrder()).
+    @OneToMany(mappedBy = "id.order") 
+    private Set<OrderItem> items = new HashSet<>(); // Instancia a coleção para garantir que nunca será nula
 
 	public Order() {
 	}
@@ -77,6 +86,24 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	public Set<OrderItem> getItems() {
+        return items;
+    }
+	
+// --- Lógica de Negócio: Método total() ---
+    
+    // O método total() foi definido no UML.
+    // Ele calcula a soma dos subtotais de todos os itens do pedido.
+    public Double getTotal() {
+        double sum = 0.0;
+        // Percorre a coleção de itens
+        for (OrderItem item : items) {
+            // Soma o subtotal de cada item (preço * quantidade)
+            sum += item.getSubTotal();
+        }
+        return sum;
+    }
 
 	@Override
 	public int hashCode() {
