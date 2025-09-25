@@ -22,15 +22,18 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		// 1. Usa getReferenceById(id) para pegar uma referência do objeto sem tocar no banco
-        // até que seja realmente necessário (boa prática de performance).
-        // Se o ID não existir, ele pode lançar uma exceção de Entidade Não Encontrada (a ser tratada em um Exception Handler)
-        User entity = repository.getReferenceById(id);
-        
-     // 2. Copia os dados do objeto recebido (obj) para a entidade monitorada (entity)
-        updateData(entity, obj);
-        
-        return repository.save(entity);
+		try {
+			User entity = repository.findById(id)
+	                .orElseThrow(() -> new ResourceNotFoundException(id));
+	        
+	     // 2. Copia os dados do objeto recebido (obj) para a entidade monitorada (entity)
+	        updateData(entity, obj);
+	        
+	        return repository.save(entity);
+		}
+		catch (ResourceNotFoundException e) {
+			throw e;
+		}
 	}
 	
 	/**
