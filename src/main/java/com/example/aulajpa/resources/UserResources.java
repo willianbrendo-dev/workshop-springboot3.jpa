@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,25 @@ public class UserResources {
         //    - Body: O objeto User salvo (com o ID)
         return ResponseEntity.created(uri).body(obj);
 	}
+	
+	/**
+     * Endpoint para atualizar os dados de um usuário existente.
+     * Mapeado para requisições PUT em /users/{id}.
+     * * @param id O ID do usuário a ser atualizado.
+     * @param obj O objeto User com os novos dados, recebido no corpo da requisição (JSON).
+     * @return ResponseEntity com status 200 OK e o objeto User atualizado.
+     */
+    @PutMapping(value = "/{id}") // Mapeia requisições HTTP PUT
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
+        // 1. Chama o Service para realizar a atualização.
+        // O Service retorna o objeto 'obj' atualizado e persistido.
+        obj = service.update(id, obj);
+        
+        // 2. Retorna a resposta: 
+        //    - Status 200 (OK) - Padrão para sucesso na atualização (PUT).
+        //    - Body: O objeto User atualizado.
+        return ResponseEntity.ok().body(obj);
+    }
 	
 	@DeleteMapping(value = "/{id}") 
     public ResponseEntity<Void> delete(@PathVariable Long id) {
